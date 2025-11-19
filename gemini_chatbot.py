@@ -11,7 +11,7 @@ def main():
         user_input = input("Ask Anything: ")
 
         if user_input.lower() in ["exit", "quit"]:
-            print("Goodbye!")
+            print("Thank you and Goodbye!")
             break
         
         response = chat.send_message(user_input)
