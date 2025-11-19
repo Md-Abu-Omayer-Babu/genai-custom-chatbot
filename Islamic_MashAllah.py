@@ -1,41 +1,26 @@
-import os
-import google.generativeai as genai
+from llm_client import get_model
 
-api_key = os.environ.get("your_api_key")
-genai.configure(api_key = api_key)
 
-generation_config = {
-    "temperature": 1,
-    "top_p": 0.95,
-    "top_k": 40,
-    "max_output_tokens": 8192,
-    "response_mime_type": "text/plain",
-}
+def main():
+    model = get_model()
+    chat = model.start_chat()
 
-model = genai.GenerativeModel(
-    model_name="gemini-2.0-flash-exp",
-    generation_config=generation_config,
-)
+    print("Islamic Perspective Generator (type 'exit' to quit)\n")
 
-chat_session = model.start_chat()
+    while True:
+        topic = input("Enter an Islamic topic: ")
 
-while True:
-    print("You: ", end="")
-    topic = input()
-    user_prompt = f"What's the Islamic perspective on {topic}?\
-        Please provide references from the Quran and authentic Hadith books such as Sahih al-Bukhari, Sahih Muslim, Sunan Abu Dawood, Jami al-Tirmidhi, Sunan al-Nasa'i, and Sunan Ibn Majah.\
-        give the short answer!\n"
+        if topic.lower() in ["exit", "quit"]:
+            break
 
-    chat_session.history.append({
-        "role": "user",
-        "parts": [user_prompt]
-    })
+        prompt = (
+            f"Provide a short Islamic perspective on: {topic}. "
+            f"Include authentic references from Qur'an or Sahih Hadith."
+        )
 
-    response = chat_session.send_message(user_prompt)
+        response = chat.send_message(prompt)
+        print("\nResponse:\n", response.text, "\n")
 
-    chat_session.history.append({
-        "role": "model",
-        "parts": [response.text]
-    })
 
-    print(response.text)
+if __name__ == "__main__":
+    main()

@@ -1,27 +1,21 @@
-import os
-import google.generativeai as genai
+from llm_client import get_model
 
-api_key = os.environ.get("your_api_key")
+def main():
+    model = get_model()
+    
+    chat = model.start_chat(history=[])
 
-genai.configure(api_key = api_key)
+    print("Custom Gemini Chatbot (type 'exit' to quit)\n")
 
-generation_config = {
-  "temperature": 1,
-  "top_p": 0.95,
-  "top_k": 40,
-  "max_output_tokens": 8192,
-  "response_mime_type": "text/plain",
-}
+    while True:
+        user_input = input("Ask Anything: ")
 
-model = genai.GenerativeModel(
-  model_name="gemini-2.0-flash-exp",
-  generation_config=generation_config,
-)
+        if user_input.lower() in ["exit", "quit"]:
+            print("Goodbye!")
+            break
+        
+        response = chat.send_message(user_input)
+        print("Gemini:", response.text)
 
-chat_session = model.start_chat()
-
-while True:
-    print("You: ", end="")
-    user_prompt = input()
-    response = chat_session.send_message(user_prompt)
-    print(response.text)
+if __name__ == "__main__":
+    main()
