@@ -8,7 +8,7 @@ def main():
     print("Islamic Perspective Generator (type 'exit' to quit)\n")
 
     while True:
-        topic = input("Enter an Islamic topic: ")
+        topic = input("Ask anything about Islam: ")
 
         if topic.lower() in ["exit", "quit"]:
             break
